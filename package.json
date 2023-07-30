@@ -12,8 +12,5 @@
     "cbor-js": "^0.1.0",
     "cuckoo-filter": "^1.1.4",
     "ws": "^8.12.0"
-  },
-  "publishConfig": {
-    "@littlecatcatx:registry": "https://npm.pkg.github.com"
   }
 }
