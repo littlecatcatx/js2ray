@@ -2,9 +2,9 @@
 const { WebSocketServer } = require('ws');
 const net = require('net');
 const http = require('http');
-const validator = require('./validator');
-const _server = require('./server');
-const event = require('./event'); 
+const validator = require('./vmess/validator');
+const _server = require('./vmess/server');
+const event = require('./vmess/event');
 
 
 function config(data) {
@@ -67,7 +67,7 @@ function config(data) {
             localsocket.on('data', function (buffer) {
                 if (buffer.includes("keep-alive")) {
                     buffer.write(replace(buffer, "keep-alive", "close") + "", 0)
-                } 
+                }
                 var indhttp = buffer.indexOf('\r\n\r\n')
                 if (indhttp != -1 && (buffer.subarray(0, 3) == "GET" || buffer.subarray(0, 4) == "POST")) {
                     this.write(HTTP_HEADER)
@@ -100,4 +100,4 @@ function replace(buf, a, b) {
 }
 module.exports = {
     config,
-} 
+}

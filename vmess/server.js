@@ -153,7 +153,7 @@ function DecodeRequestHeader(buffer) {
         app._security = securityType;
         app._isConnecting = true;
 
-        tunnel.connect(addrType === ATYP_DOMAIN ? addr.toString() : iptoString(addr), port, cmd, function () {
+        app._socket = tunnel.connect(addrType === ATYP_DOMAIN ? addr.toString() : iptoString(addr), port, cmd, function () {
             app.outbound = this.outbound
             app._adBuf.put(Buffer.concat([data, app._staging]), app);
             app._isHeaderRecv = true;
@@ -240,6 +240,10 @@ function connect(socket, ip) {
 
 
 function close() {
+    if (this.app._socket) {
+        this.app._socket.destroy();
+        this.app._socket = null;
+    }
     this.app._adBuf.clear();
     this.app._adBuf = null;
     this.app._host = null;
@@ -256,10 +260,10 @@ function close() {
 }
 
 
-// =================================================  sender 
+// =================================================  sender
 function resolveChunk(chunk) {
     let _chunk = chunk;
-    if ([consts.SECURITY_TYPE_AES_128_GCM, consts.SECURITY_TYPE_CHACHA20_POLY1305].includes(this._security)) {  
+    if ([consts.SECURITY_TYPE_AES_128_GCM, consts.SECURITY_TYPE_CHACHA20_POLY1305].includes(this._security)) {
         _chunk = Buffer.concat(this.encrypt(_chunk));
     }
     let _len = _chunk.length;
@@ -463,7 +467,7 @@ function fnv1a(buffer) {
 
 
 module.exports = {
-    message: DecodeRequestHeader, 
+    message: DecodeRequestHeader,
     connect,
     close
 }

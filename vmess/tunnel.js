@@ -10,7 +10,8 @@ function connect(host, port, cmd, connect, data) {
         dgramsocket.on('error', error);
         dgramsocket.on('message', data)
         dgramsocket.outbound = dgramsocket.send.bind(dgramsocket)
-
+        dgramsocket.destroy = dgramsocket.close.bind(dgramsocket)
+        return dgramsocket;
     } else {
         var remotesocket = new net.Socket();
         remotesocket.setTimeout(60000)
@@ -18,6 +19,7 @@ function connect(host, port, cmd, connect, data) {
         remotesocket.on('error', error);
         remotesocket.on('data', data);
         remotesocket.outbound = remotesocket.write.bind(remotesocket)
+        return remotesocket;
     }
 };
 
