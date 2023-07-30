@@ -1,7 +1,7 @@
 
 const crypto = require('crypto');
-const fs = require('fs');
-const { setInterval } = require('timers');
+// const fs = require('fs');
+// const { setInterval } = require('timers');
 const consts = require("./consts")
 function New() {
     return crypto.randomBytes(16)
@@ -80,7 +80,8 @@ var securityTypes = {
 };
 
 
-var users_data = usesave()
+// var users_data = usesave()
+var users_data = {}
 var users = []
 
 
@@ -105,30 +106,30 @@ function AsAccount(a) {
 }
 
 
-setInterval(save, 60000);
-function usesave() {
-    try {
-        var usage = fs.readFileSync(__dirname + "/data.json");
-        if (usage == "") {
-            usage = {}
-        }
-        return usage;
-    } catch (error) {
-        console.log("read file error", error)
-        return {}
-    }
-}
-function save() {
-    try {
-        var usage = {}
-        for (const i of users) {
-            usage[i.id.UUID.toString("hex")] = [i.bytesRead, i.bytesWrit]
-        }
-        fs.writeFileSync(__dirname + "/data.json", JSON.stringify(usage));
-    } catch (error) {
-        console.log("write file error")
-    }
-}
+// setInterval(save, 60000);
+// function usesave() {
+//     try {
+//         var usage = fs.readFileSync(__dirname + "/data.json");
+//         if (usage == "") {
+//             usage = {}
+//         }
+//         return usage;
+//     } catch (error) {
+//         console.log("read file error", error)
+//         return {}
+//     }
+// }
+// function save() {
+//     try {
+//         var usage = {}
+//         for (const i of users) {
+//             usage[i.id.UUID.toString("hex")] = [i.bytesRead, i.bytesWrit]
+//         }
+//         fs.writeFileSync(__dirname + "/data.json", JSON.stringify(usage));
+//     } catch (error) {
+//         console.log("write file error")
+//     }
+// }
 
 module.exports = {
     AsAccount,
